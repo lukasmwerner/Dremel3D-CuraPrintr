@@ -19,7 +19,7 @@
 
   - marlin flavor
 
-- Below is from server state via `/commmand` + `d=GETPRINTERSTATUS`
+- Below is from server state via `/commmand` + form key of `GETPRINTERSTATUS`
 
 ```json
 {
