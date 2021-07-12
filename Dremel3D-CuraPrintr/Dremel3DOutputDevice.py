@@ -206,28 +206,33 @@ class Dremel3DOutputDevice(OutputDevice):
         self._stream.close()
         self._stream = None
 
-        data = QByteArray()
-        data.append("PRINT={}".format(self._fileName))
+        if self._startPrint and self._startPrint == True:
 
-        headers = {
-            "User-Agent": "Mozilla/5.0",
-            "Connection": "Keep-Alive",
-        }
+            data = QByteArray()
+            data.append("PRINT={}".format(self._fileName))
 
-        req = QNetworkRequest(QUrl())
-        req.setHeader(
-            QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded"
-        )
-        self.application.getHttpRequestManager().post(
-            self._url + "command",
-            headers,
-            data,
-            callback=None,
-            error_callback=self._onNetworkError,
-        )
+            headers = {
+                "User-Agent": "Mozilla/5.0",
+                "Connection": "Keep-Alive",
+            }
 
-        self.writeSuccess.emit(self)
-        self._resetState()
+            req = QNetworkRequest(QUrl())
+            req.setHeader(
+                QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded"
+            )
+            self.application.getHttpRequestManager().post(
+                self._url + "command",
+                headers,
+                data,
+                callback=None,
+                error_callback=self._onNetworkError,
+            )
+
+            self.writeSuccess.emit(self)
+            self._resetState()
+        else:
+            self.writeSuccess.emit(self)
+            self._resetState()
 
     def _onProgress(self, progress):
         if self._message:
@@ -296,15 +301,6 @@ class Dremel3DOutputDevice(OutputDevice):
             )
             part_file.setBody(data)
             parts.append(part_file)
-
-            if self._startPrint and self._startPrint == True:
-                part_print = QHttpPart()
-                part_print.setHeader(
-                    QNetworkRequest.ContentDispositionHeader,
-                    QVariant('form-data; name="print"'),
-                )
-                part_print.setBody(b"true")
-                parts.append(part_print)
 
             headers["Content-Type"] = "multipart/form-data; boundary=" + str(
                 parts.boundary().data(), encoding="utf-8"
