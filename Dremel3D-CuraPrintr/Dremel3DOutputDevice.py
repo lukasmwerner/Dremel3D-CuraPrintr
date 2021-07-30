@@ -57,7 +57,7 @@ class Dremel3DOutputDevice(OutputDevice):
         global_container_stack = self.application.getGlobalContainerStack()
         self._name = global_container_stack.getName()
 
-        description = catalog.i18nc("@action:button", "Upload to {0}").format(
+        description = catalog.i18nc("@action:button", "Start on {0}").format(
             self._name
         )
         self.setShortDescription(description)
@@ -103,25 +103,27 @@ class Dremel3DOutputDevice(OutputDevice):
         self._fileName = fileName + "." + self._output_format
 
         # Display upload dialog
-        path = os.path.join(
-            os.path.dirname(os.path.abspath(__file__)),
-            "resources",
-            "qml",
-            "Dremel3DUpload.qml",
-        )
-        self._dialog = CuraApplication.getInstance().createQmlComponent(
-            path, {"manager": self}
-        )
-        self._dialog.textChanged.connect(self.onFilenameChanged)
-        self._dialog.accepted.connect(self.onFilenameAccepted)
-        self._dialog.show()
-        self._dialog.findChild(QObject, "nameField").setProperty("text", self._fileName)
-        self._dialog.findChild(QObject, "nameField").select(
-            0, len(self._fileName) - len(self._output_format) - 1
-        )
-        self._dialog.findChild(QObject, "nameField").setProperty("focus", True)
+        #path = os.path.join(
+        #    os.path.dirname(os.path.abspath(__file__)),
+        #    "resources",
+        #    "qml",
+        #    "Dremel3DUpload.qml",
+        #)
+        #self._dialog = CuraApplication.getInstance().createQmlComponent(
+        #    path, {"manager": self}
+        #)
+        #self._dialog.textChanged.connect(self.onFilenameChanged)
+        #self._dialog.accepted.connect(self.onFilenameAccepted)
+        #self._dialog.show()
+        #self._dialog.findChild(QObject, "nameField").setProperty("text", self._fileName)
+        #self._dialog.findChild(QObject, "nameField").select(
+        #    0, len(self._fileName) - len(self._output_format) - 1
+        #)
+        #self._dialog.findChild(QObject, "nameField").setProperty("focus", True)
 
         ## TODO: just upload directly here
+        self._startPrint = True
+        startUploading()
 
     def onFilenameChanged(self):
         fileName = self._dialog.findChild(QObject, "nameField").property("text").strip()
@@ -144,23 +146,23 @@ class Dremel3DOutputDevice(OutputDevice):
         self._dialog.setProperty("validName", len(fileName) > 0)
         self._dialog.setProperty("validationError", "Filename too short")
 
-    def onFilenameAccepted(self):
-        self._fileName = (
-            self._dialog.findChild(QObject, "nameField").property("text").strip()
-        )
-        if (
-            not self._fileName.endswith("." + self._output_format)
-            and "." not in self._fileName
-        ):
-            self._fileName += "." + self._output_format
-        Logger.log("d", "Filename set to: " + self._fileName)
+    def startUploading(self):
+        #self._fileName = (
+        #    self._dialog.findChild(QObject, "nameField").property("text").strip()
+        #)
+        #if (
+        #    not self._fileName.endswith("." + self._output_format)
+        #    and "." not in self._fileName
+        #):
+        #    self._fileName += "." + self._output_format
+        #Logger.log("d", "Filename set to: " + self._fileName)
 
-        self._startPrint = self._dialog.findChild(QObject, "printField").property(
-            "checked"
-        )
-        Logger.log("d", "Print set to: " + str(self._startPrint))
+        #self._startPrint = self._dialog.findChild(QObject, "printField").property(
+        #    "checked"
+        #)
+        #Logger.log("d", "Print set to: " + str(self._startPrint))
 
-        self._dialog.deleteLater()
+        #self._dialog.deleteLater()
         self._stage = OutputStage.writing
 
         # show a progress message
