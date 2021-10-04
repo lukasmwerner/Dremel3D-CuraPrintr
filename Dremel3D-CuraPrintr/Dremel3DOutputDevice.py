@@ -123,7 +123,7 @@ class Dremel3DOutputDevice(OutputDevice):
 
         ## TODO: just upload directly here
         self._startPrint = True
-        startUploading()
+        self.startUploading()
 
     def onFilenameChanged(self):
         fileName = self._dialog.findChild(QObject, "nameField").property("text").strip()
