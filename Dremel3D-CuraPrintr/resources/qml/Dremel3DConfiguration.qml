@@ -1,10 +1,10 @@
-import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick 2.7
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.1
 import QtQuick.Window 2.1
 
-import UM 1.2 as UM
-import Cura 1.0 as Cura
+import UM 1.3 as UM
+import Cura 1.1 as Cura
 
 
 Cura.MachineAction

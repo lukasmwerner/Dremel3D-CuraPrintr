@@ -3,7 +3,7 @@ import json
 import re
 from typing import Dict, Type, TYPE_CHECKING, List, Optional, cast
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt6.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
 
 from cura.CuraApplication import CuraApplication
 from cura.MachineAction import MachineAction

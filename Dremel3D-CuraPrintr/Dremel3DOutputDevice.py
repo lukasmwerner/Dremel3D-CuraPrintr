@@ -8,9 +8,9 @@ from typing import cast
 
 from cura.CuraApplication import CuraApplication
 
-from PyQt5.QtCore import QByteArray, QObject, QUrl, QVariant
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkReply, QNetworkRequest
+from PyQt6.QtCore import QByteArray, QObject, QUrl, QVariant
+from PyQt6.QtGui import QDesktopServices
+from PyQt6.QtNetwork import QHttpMultiPart, QHttpPart, QNetworkReply, QNetworkRequest
 
 from UM.Application import Application
 from UM.i18n import i18nCatalog
