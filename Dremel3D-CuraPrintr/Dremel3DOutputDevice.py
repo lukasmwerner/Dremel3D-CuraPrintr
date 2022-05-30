@@ -129,7 +129,7 @@ class Dremel3DOutputDevice(OutputDevice):
         fileName = self._dialog.findChild(QObject, "nameField").property("text").strip()
         fileName = self._dialog.findChild(QObject, "nameField").property("text").strip()
 
-        forbidden_characters = '\/:*?"<>|'
+        forbidden_characters = '\\/:*?"<>|'
         for forbidden_character in forbidden_characters:
             if forbidden_character in fileName:
                 self._dialog.setProperty("validName", False)
@@ -179,7 +179,7 @@ class Dremel3DOutputDevice(OutputDevice):
     def onInstanceOnline(self, reply):
         if self._stage != OutputStage.writing:
             return
-        if reply.error() != QNetworkReply.NoError:
+        if reply.error() != QNetworkReply.NetworkError.NoError:
             Logger.log("d", "Stopping due to reply error: " + reply.error())
             return
 
@@ -200,7 +200,7 @@ class Dremel3DOutputDevice(OutputDevice):
     def onCodeUploaded(self, reply):
         if self._stage != OutputStage.writing:
             return
-        if reply.error() != QNetworkReply.NoError:
+        if reply.error() != QNetworkReply.NetworkError.NoError:
             Logger.log("d", "Stopping due to reply error: " + reply.error())
             return
 
@@ -211,7 +211,7 @@ class Dremel3DOutputDevice(OutputDevice):
         if self._startPrint and self._startPrint == True:
 
             data = QByteArray()
-            data.append("PRINT={}".format(self._fileName))
+            data.append(bytes("PRINT={}".format(self._fileName), encoding="utf-8"))
 
             headers = {
                 "User-Agent": "Mozilla/5.0",
@@ -220,7 +220,7 @@ class Dremel3DOutputDevice(OutputDevice):
 
             req = QNetworkRequest(QUrl())
             req.setHeader(
-                QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded"
+                QNetworkRequest.KnownHeaders.ContentTypeHeader, "application/x-www-form-urlencoded"
             )
             self.application.getHttpRequestManager().post(
                 self._url + "command",
@@ -294,12 +294,12 @@ class Dremel3DOutputDevice(OutputDevice):
 
         if data:
             # Create multi_part request
-            parts = QHttpMultiPart(QHttpMultiPart.FormDataType)
+            parts = QHttpMultiPart(QHttpMultiPart.ContentType.FormDataType)
 
             part_file = QHttpPart()
             part_file.setHeader(
-                QNetworkRequest.ContentDispositionHeader,
-                QVariant('form-data; name="print_file"; filename="' + name + '"'),
+                QNetworkRequest.KnownHeaders.ContentDispositionHeader,
+                QVariant('form-data; name="print_file"; filename="' + str(name) + '"'),
             )
             part_file.setBody(data)
             parts.append(part_file)
