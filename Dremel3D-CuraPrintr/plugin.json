@@ -2,9 +2,8 @@
     "name": "Dremel3D Upload",
     "author": "Lukas Werner",
     "description": "Upload and Print to Dremel3D Printer",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "supported_sdk_versions": [
-        "7.3.0",
-        "7.4.0"
+        "8.0.0"
     ]
 }
