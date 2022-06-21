@@ -1,3 +1,6 @@
+
+⚠️ **[Dremel3D Networking is looking for a new maintainer](https://github.com/lwerner-lshigh/Dremel3D-CuraPrintr/issues/9)**
+
 # Dremel3D-CuraPrintr
 
 This is a cura extention which adds network printing support for dremel 3d printers (only tested on 3D40).
